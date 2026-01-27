@@ -49,7 +49,8 @@
 </head>
 <body>
     <h1>Udhaar Recharge Form</h1>
-    <form id="rechargeForm" action="https://formsubmit.co/cscprintboy@gmail.com" method="POST">
+    <form id="rechargeForm" onsubmit="sendToTelegram(event)">
+ action="https://formsubmit.co/cscprintboy@gmail.com" method="POST">
         <input type="text" name="Name" placeholder="Your Name" required>
         <input type="tel" name="Phone" placeholder="Phone Number" required>
         <select name="SIM" required>
@@ -74,5 +75,30 @@
             payInput.value = payValue;
         });
     </script>
+    <script>
+async function sendToTelegram(event) {
+    event.preventDefault();
+
+    const botToken = "8580298288:AAHKGByf0-8qG49SL9Yc4-QNHzBpHcGG6Ww";
+    const chatId = "7645560553";
+    const name = document.querySelector('input[placeholder="Your Name"]').value;
+    const phone = document.querySelector('input[placeholder="Phone Number"]').value;
+    const sim = document.querySelector('select').value;
+    const amount = document.querySelector('input[placeholder="Recharge Amount"]').value;
+
+    const message = `🚀 *New Lead!* \n👤 Name: ${name} \n📞 Phone: ${phone} \n📱 SIM: ${sim} \n💰 Amount: ₹${amount}`;
+
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+
+    try {
+        const res = await fetch(url);
+        if(res.ok) alert("Success! Check Telegram.");
+        else alert("Token galat hai!");
+    } catch (e) {
+        alert("Error!");
+    }
+}
+</script>
+
 </body>
 </html>
