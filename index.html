@@ -3,62 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Udhaar Recharge</title>
+<title>CSC Recharge Lead</title>
 
 <style>
-body{font-family:Arial;background:#f2f2f2;padding:20px}
-h1{text-align:center}
-form{background:#fff;padding:20px;max-width:400px;margin:auto;border-radius:10px}
-input,select,button{width:100%;padding:10px;margin:8px 0}
-input[readonly]{background:#e0e0e0}
-button{background:#4CAF50;color:#fff;border:none;border-radius:5px}
+body{
+    font-family: Arial;
+    background:#f2f2f2;
+    padding:20px;
+}
+form{
+    background:#fff;
+    max-width:400px;
+    margin:auto;
+    padding:20px;
+    border-radius:10px;
+}
+input,select,button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+}
+button{
+    background:green;
+    color:white;
+    border:none;
+}
 </style>
 </head>
 
 <body>
 
-<h1>Udhaar Recharge Form</h1>
+<h2 style="text-align:center;">Recharge Lead Form</h2>
 
-<form id="rechargeForm">
-  <input id="name" placeholder="Name" required>
-  <input id="phone" placeholder="Phone" required>
-  <select id="sim" required>
-    <option value="">Select SIM</option>
-    <option>Airtel</option>
-    <option>Jio</option>
-    <option>Vi</option>
-    <option>BSNL</option>
-  </select>
-  <input id="recharge" type="number" placeholder="Recharge Amount" required>
-  <input id="pay" type="number" placeholder="Pay Amount (+25)" readonly>
-  <button type="submit">Submit</button>
+<form id="leadForm">
+<input type="text" name="name" placeholder="Name" required>
+<input type="tel" name="phone" placeholder="Mobile Number" required>
+
+<select name="sim" required>
+<option value="">Select SIM</option>
+<option>Airtel</option>
+<option>Jio</option>
+<option>Vi</option>
+<option>BSNL</option>
+</select>
+
+<input type="number" name="recharge" placeholder="Recharge Amount" required>
+<input type="number" name="pay" placeholder="Pay Amount" readonly>
+
+<button type="submit">Submit</button>
 </form>
 
 <script>
-const botToken = "8377489154:AAHuCgnxDyzLws1X-YUqfPkp_dM33d77NJU";
-const chatId  = "7645560553";
+const form = document.getElementById("leadForm");
 
-document.getElementById("recharge").oninput = () => {
-  pay.value = (Number(recharge.value)||0) + 25;
-};
+form.recharge.addEventListener("input", ()=>{
+    form.pay.value = Number(form.recharge.value || 0) + 25;
+});
 
-document.getElementById("rechargeForm").onsubmit = async (e) => {
-  e.preventDefault();
+form.addEventListener("submit", async function(e){
+    e.preventDefault();
 
-  const msg =
+    const token = "8377489154:AAHuCgnxDyzLws1X-YUqfPkp_dM33d77NJU";
+    const chatId = "7645560553";
+
+    const msg = 
 `🚀 New Lead
-👤 Name: ${name.value}
-📞 Phone: ${phone.value}
-📱 SIM: ${sim.value}
-💳 Recharge: ₹${recharge.value}
-💰 Pay: ₹${pay.value}`;
+👤 Name: ${form.name.value}
+📞 Phone: ${form.phone.value}
+📱 SIM: ${form.sim.value}
+💰 Recharge: ₹${form.recharge.value}
+💵 Pay: ₹${form.pay.value}`;
 
-  const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`;
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
 
-  const r = await fetch(url);
-  if(r.ok) alert("Telegram par aa gaya");
-  else alert("Error");
-};
+    await fetch(url,{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({
+            chat_id:chatId,
+            text:msg
+        })
+    });
+
+    alert("Lead Sent Successfully");
+    form.reset();
+});
 </script>
 
 </body>
