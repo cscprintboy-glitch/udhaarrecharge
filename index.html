@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Udhaar Recharge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[readonly] {
+            background: #e0e0e0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Udhaar Recharge Form</h1>
+    <form id="rechargeForm" action="https://formsubmit.co/cscprintboy@gmail.com" method="POST">
+        <input type="text" name="Name" placeholder="Your Name" required>
+        <input type="tel" name="Phone" placeholder="Phone Number" required>
+        <select name="SIM" required>
+            <option value="">Select SIM</option>
+            <option value="Airtel">Airtel</option>
+            <option value="Jio">Jio</option>
+            <option value="Vi">Vi</option>
+            <option value="BSNL">BSNL</option>
+        </select>
+        <input type="number" name="RechargeAmount" id="rechargeAmount" placeholder="Recharge Amount" required>
+        <input type="number" name="PayAmount" id="payAmount" placeholder="Pay Amount (with 25 extra)" readonly>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const rechargeInput = document.getElementById('rechargeAmount');
+        const payInput = document.getElementById('payAmount');
+
+        rechargeInput.addEventListener('input', function() {
+            const rechargeValue = parseFloat(rechargeInput.value) || 0;
+            const payValue = rechargeValue + 25; // 25 rupees extra
+            payInput.value = payValue;
+        });
+    </script>
+</body>
+</html>
