@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>ST Cottex Pvt Ltd | Lead Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:linear-gradient(135deg,#e3f2fd,#fce4ec);
+}
+header{
+  background:#0d47a1;
+  color:#fff;
+  padding:15px;
+  text-align:center;
+}
+header h1{margin:0;font-size:20px;}
+header p{margin:3px;font-size:13px;}
+
+.container{padding:15px;}
+
+.card{
+  background:#fff;
+  padding:15px;
+  border-radius:8px;
+  margin-bottom:15px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+h3{margin-top:0;color:#0d47a1;}
+
+input,select,button{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  font-size:15px;
+}
+
+button{
+  background:#0d47a1;
+  color:white;
+  border:none;
+  border-radius:5px;
+}
+
+button.whatsapp{
+  background:#25d366;
+}
+
+.status{
+  font-size:13px;
+  padding:4px 8px;
+  border-radius:4px;
+}
+.pending{background:#ffeb3b;}
+.success{background:#4caf50;color:#fff;}
+
+.list-item{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:6px;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>ST Cottex Pvt Ltd</h1>
+<p>Ludhiana, Punjab | Iraq Machiwada – 141115</p>
+<p><b>Only for company workers</b></p>
+</header>
+
+<div class="container">
+
+<!-- Recharge Lead -->
+<div class="card">
+<h3>📱 Recharge Lead</h3>
+<input id="r_name" placeholder="Customer Name">
+<input id="r_mobile" placeholder="Mobile Number">
+<input type="file" id="r_selfie" accept="image/*">
+<button onclick="saveLead('Recharge')">Submit Recharge Lead</button>
+</div>
+
+<!-- Emergency Lead -->
+<div class="card">
+<h3>🚨 Emergency Fund (Max ₹500)</h3>
+<input id="e_name" placeholder="Customer Name">
+<input id="e_mobile" placeholder="Mobile Number">
+<input placeholder="Bank Name">
+<input placeholder="Account Number">
+<input placeholder="IFSC Code">
+<input type="file" id="e_selfie" accept="image/*">
+<button onclick="saveLead('Emergency')">Submit Emergency Lead</button>
+</div>
+
+<!-- WhatsApp -->
+<div class="card">
+<h3>📞 Sampark Kare</h3>
+<button class="whatsapp" onclick="openWhatsApp()">WhatsApp Chat</button>
+</div>
+
+<!-- Customer View -->
+<div class="card">
+<h3>👥 Live Customers</h3>
+<div id="customerList"></div>
+</div>
+
+<!-- Admin Panel -->
+<div class="card">
+<h3>🔐 Admin Panel</h3>
+<input type="password" id="adminPass" placeholder="Password">
+<button onclick="adminLogin()">Login</button>
+<div id="adminArea" style="display:none"></div>
+</div>
+
+</div>
+
+<script>
+let leads = JSON.parse(localStorage.getItem("leads")) || [];
+
+function saveLead(type){
+  let name = type==="Recharge" ? r_name.value : e_name.value;
+  let mobile = type==="Recharge" ? r_mobile.value : e_mobile.value;
+  if(name==""||mobile==""){alert("Details bharo");return;}
+  leads.push({name,type,status:"Pending"});
+  localStorage.setItem("leads",JSON.stringify(leads));
+  showCustomers();
+  alert("Lead Saved");
+}
+
+function showCustomers(){
+  let html="";
+  leads.forEach(l=>{
+    html+=`<div class="list-item">
+      <span>${l.name}</span>
+      <span class="status ${l.status.toLowerCase()}">${l.status}</span>
+    </div>`;
+  });
+  customerList.innerHTML=html;
+}
+
+function adminLogin(){
+  if(adminPass.value==="Manoj@143"){
+    adminArea.style.display="block";
+    renderAdmin();
+  }else alert("Wrong Password");
+}
+
+function renderAdmin(){
+  let html="";
+  leads.forEach((l,i)=>{
+    html+=`${l.name} (${l.type})
+    <button onclick="markSuccess(${i})">Success</button><br>`;
+  });
+  adminArea.innerHTML=html;
+}
+
+function markSuccess(i){
+  leads[i].status="Success";
+  localStorage.setItem("leads",JSON.stringify(leads));
+  renderAdmin();
+  showCustomers();
+}
+
+function openWhatsApp(){
+  window.open("https://wa.me/918264426101","_blank");
+}
+
+showCustomers();
+</script>
+
+</body>
+</html>
