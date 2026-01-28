@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSC Lead Panel</title>
+
+<style>
+body{font-family:Arial;background:#f2f2f2;margin:0;padding:15px}
+.header{text-align:center;background:#fff;padding:15px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.1)}
+.header img{max-width:140px}
+.card{background:#fff;margin:15px auto;max-width:420px;padding:15px;border-radius:12px;box-shadow:0 6px 15px rgba(0,0,0,.1)}
+h3{text-align:center;color:#2e7d32}
+.notice{background:#fff3cd;padding:10px;border-left:5px solid #ff9800;border-radius:8px;font-size:13px}
+input,select,button{width:100%;padding:12px;margin-top:10px;border-radius:8px;border:1px solid #ccc;font-size:15px}
+button{background:#28a745;color:#fff;border:none;font-weight:bold}
+.whatsapp{display:block;text-align:center;background:#25D366;color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold}
+#adminLogin,#adminPanel{display:none}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid #ccc;padding:6px;text-align:center}
+th{background:#28a745;color:#fff}
+.recharge{background:#e8f5e9}
+.emergency{background:#e3f2fd}
+.selfie{width:45px;height:45px;border-radius:50%;object-fit:cover}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+<img src="logo.png" alt="Logo">
+</div>
+
+<a class="whatsapp" href="https://wa.me/918264426101" target="_blank">
+📞 WhatsApp Sampark Kare
+</a>
+
+<!-- RECHARGE -->
+<div class="card">
+<h3>📱 Recharge Lead</h3>
+<input id="r_name" placeholder="Customer Name">
+<input id="r_phone" placeholder="Mobile Number">
+<select id="r_sim">
+<option value="">Select SIM</option>
+<option>Airtel</option>
+<option>Jio</option>
+<option>Vi</option>
+<option>BSNL</option>
+</select>
+<input type="file" id="r_selfie" accept="image/*">
+<input id="r_amt" type="number" placeholder="Recharge Amount">
+<input id="r_pay" readonly placeholder="Pay Amount">
+<button onclick="submitRecharge()">Submit Recharge</button>
+</div>
+
+<!-- EMERGENCY -->
+<div class="card">
+<h3>🚨 Emergency Fund</h3>
+<div class="notice">
+✔ Fund ₹500 only<br>
+✔ Pay ₹650 after 1 Month<br>
+✔ Bank + Selfie Required
+</div>
+<input id="e_name" placeholder="Customer Name">
+<input id="e_phone" placeholder="Mobile Number">
+<input id="e_bank" placeholder="Bank Name">
+<input id="e_account" placeholder="Account Number">
+<input id="e_ifsc" placeholder="IFSC Code">
+<input type="file" id="e_selfie" accept="image/*">
+<input readonly value="Fund ₹500 | Pay ₹650">
+<button onclick="submitEmergency()">Submit Emergency</button>
+</div>
+
+<!-- ADMIN -->
+<div class="card">
+<button onclick="showAdmin()">Admin Login</button>
+</div>
+
+<div class="card" id="adminLogin">
+<input type="password" id="adminPass" placeholder="Password">
+<button onclick="adminCheck()">Login</button>
+</div>
+
+<div class="card" id="adminPanel">
+<h3>📊 Admin Dashboard</h3>
+<div id="dash"></div>
+</div>
+
+<script>
+const PASSWORD="Manoj@143";
+let leads=JSON.parse(localStorage.getItem("leads")||"[]");
+
+r_amt.oninput=()=>r_pay.value=(Number(r_amt.value||0)+25);
+
+function submitRecharge(){
+ if(!r_selfie.files.length){alert("Selfie required");return;}
+ const fr=new FileReader();
+ fr.onload=()=>{
+  leads.push({
+   type:"Recharge",
+   name:r_name.value,
+   phone:r_phone.value,
+   details:r_sim.value+" ₹"+r_amt.value+" | Pay ₹"+r_pay.value,
+   selfie:fr.result
+  });
+  localStorage.setItem("leads",JSON.stringify(leads));
+  alert("Recharge Submitted");
+ };
+ fr.readAsDataURL(r_selfie.files[0]);
+}
+
+function submitEmergency(){
+ if(!e_selfie.files.length){alert("Selfie required");return;}
+ const fr=new FileReader();
+ fr.onload=()=>{
+  leads.push({
+   type:"Emergency",
+   name:e_name.value,
+   phone:e_phone.value,
+   details:"Bank:"+e_bank.value+" A/c:"+e_account.value+" IFSC:"+e_ifsc.value,
+   selfie:fr.result
+  });
+  localStorage.setItem("leads",JSON.stringify(leads));
+  alert("Emergency Submitted");
+ };
+ fr.readAsDataURL(e_selfie.files[0]);
+}
+
+function showAdmin(){adminLogin.style.display="block";}
+function adminCheck(){
+ if(adminPass.value===PASSWORD){
+  adminLogin.style.display="none";
+  adminPanel.style.display="block";
+  loadDash();
+ }else alert("Wrong Password");
+}
+
+function loadDash(){
+ let h="<table><tr><th>Type</th><th>Name</th><th>Phone</th><th>Details</th><th>Selfie</th></tr>";
+ leads.forEach(l=>{
+  h+=`<tr class="${l.type==="Recharge"?"recharge":"emergency"}">
+  <td>${l.type}</td><td>${l.name}</td><td>${l.phone}</td>
+  <td>${l.details}</td>
+  <td><img src="${l.selfie}" class="selfie"></td></tr>`;
+ });
+ h+="</table>";
+ dash.innerHTML=h;
+}
+</script>
+
+</body>
+</html>
