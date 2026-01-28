@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ST Cottex Export Pvt Ltd</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#0b3c91,#1e88e5);
+}
+.header{
+  text-align:center;
+  color:#fff;
+  padding:30px 10px;
+}
+.header img{width:80px;margin-bottom:10px}
+.card{
+  background:#fff;
+  max-width:420px;
+  margin:20px auto;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,.25)
+}
+h2{color:#0b3c91;margin-top:0}
+input,select,button{
+  width:100%;
+  padding:11px;
+  margin-top:10px;
+  font-size:15px;
+}
+button{
+  background:#0b3c91;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+}
+.whatsapp{background:#25d366}
+.note{
+  font-size:14px;
+  color:#444;
+  margin-top:8px;
+}
+.footer{
+  text-align:center;
+  color:#e0e0e0;
+  font-size:13px;
+  padding:20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <img src="logo.png">
+  <h1>ST Cottex Export Pvt Ltd</h1>
+  <p>Ludhiana, Punjab | Iraq Machiwada 141115</p>
+</div>
+
+<!-- Recharge Lead -->
+<div class="card">
+  <h2>📱 Recharge Service</h2>
+
+  <input id="name" placeholder="Customer Name">
+  <input id="mobile" placeholder="Mobile Number">
+
+  <select id="amount" onchange="calcCharge()">
+    <option value="">Recharge Amount Select</option>
+    <option value="149">₹149</option>
+    <option value="199">₹199</option>
+    <option value="349">₹349</option>
+  </select>
+
+  <input id="charge" placeholder="Service Charge" readonly>
+
+  <button onclick="sendLead()">Submit Recharge</button>
+
+  <div class="note">
+    ₹149 → ₹25 charge | ₹199 → ₹30 charge | ₹349 → ₹40 charge
+  </div>
+</div>
+
+<!-- WhatsApp -->
+<div class="card">
+  <h2>📞 Contact</h2>
+  <button class="whatsapp" onclick="wa()">WhatsApp Chat</button>
+</div>
+
+<div class="footer">© ST Cottex Export Pvt Ltd</div>
+
+<script>
+function calcCharge(){
+  let amt=document.getElementById("amount").value;
+  let charge="";
+  if(amt=="149") charge="₹25";
+  if(amt=="199") charge="₹30";
+  if(amt=="349") charge="₹40";
+  document.getElementById("charge").value=charge;
+}
+
+function sendLead(){
+  let name=name=document.getElementById("name").value;
+  let mobile=document.getElementById("mobile").value;
+  let amt=document.getElementById("amount").value;
+  let charge=document.getElementById("charge").value;
+
+  if(!name||!mobile||!amt){
+    alert("All details required");
+    return;
+  }
+
+  let token="8377489154:AAHuCgnxDyzLws1X-YUqfPkp_dM33d77NJU";
+  let chat="7645560553";
+
+  let msg=
+"🔔 NEW RECHARGE LEAD\n\n"+
+"🏢 ST Cottex Export Pvt Ltd\n\n"+
+"👤 Name: "+name+"\n"+
+"📞 Mobile: "+mobile+"\n"+
+"💰 Recharge: ₹"+amt+"\n"+
+"➕ Service Charge: "+charge+"\n"+
+"⏳ Status: Pending";
+
+  fetch("https://api.telegram.org/bot"+token+"/sendMessage",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({chat_id:chat,text:msg})
+  }).then(r=>r.json()).then(d=>{
+    if(d.ok) alert("Recharge Lead Sent Successfully");
+    else alert("Telegram Error");
+  });
+}
+
+function wa(){
+  window.open("https://wa.me/918264426101","_blank");
+}
+</script>
+
+</body>
+</html>
