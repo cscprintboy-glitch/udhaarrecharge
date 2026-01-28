@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ST Cottex Pvt Ltd</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#eef2ff;
+  padding:15px;
+}
+
+/* HEADER */
+.company-header{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:15px;
+  background:linear-gradient(135deg,#1e3a8a,#0ea5e9);
+  border-radius:14px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  margin-bottom:20px;
+}
+.company-logo{
+  width:70px;
+  height:70px;
+  background:#fff;
+  padding:6px;
+  border-radius:12px;
+  object-fit:contain;
+}
+.company-text h1{
+  margin:0;
+  color:#fff;
+  font-size:24px;
+}
+.company-text p{
+  margin:6px 0;
+  color:#e0f2fe;
+  font-size:13px;
+}
+.only-tag{
+  background:#e0f2fe;
+  color:#1e3a8a;
+  padding:4px 10px;
+  font-size:11px;
+  border-radius:20px;
+  display:inline-block;
+}
+
+/* FORM */
+form{
+  background:#fff;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+h2{
+  text-align:center;
+}
+input,select,button{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+}
+button{
+  background:#22c55e;
+  border:none;
+  color:#fff;
+  font-size:16px;
+  border-radius:8px;
+}
+
+/* PUBLIC BOARD */
+.public-board{
+  background:#f8fafc;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+.public-board h3{
+  text-align:center;
+}
+#publicList{
+  list-style:none;
+  padding:0;
+}
+#publicList li{
+  display:flex;
+  justify-content:space-between;
+  background:#fff;
+  padding:8px;
+  margin-bottom:6px;
+  border-radius:8px;
+}
+.pub-pending{color:#b45309;font-weight:bold;}
+.pub-success{color:#15803d;font-weight:bold;}
+
+/* ADMIN */
+.admin{
+  display:none;
+  background:#fff;
+  padding:15px;
+  border-radius:12px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+}
+th,td{
+  border:1px solid #ddd;
+  padding:6px;
+  font-size:13px;
+  text-align:center;
+}
+th{
+  background:#0ea5e9;
+  color:#fff;
+}
+.status-pending{color:#b45309;font-weight:bold;}
+.status-success{color:#15803d;font-weight:bold;}
+.success-btn{
+  background:#22c55e;
+  color:#fff;
+  border:none;
+  padding:4px 8px;
+  border-radius:6px;
+}
+
+/* WHATSAPP */
+.whatsapp{
+  position:fixed;
+  right:15px;
+  bottom:15px;
+  background:#25D366;
+  color:#fff;
+  padding:12px 16px;
+  border-radius:50px;
+  text-decoration:none;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="company-header">
+  <img src="logo.png" class="company-logo">
+  <div class="company-text">
+    <h1>ST Cottex Pvt Ltd</h1>
+    <p>Ludhiana, Punjab<br>Iraq Machiwada – 141115</p>
+    <span class="only-tag">Only for Company Workers</span>
+  </div>
+</div>
+
+<!-- RECHARGE FORM -->
+<form id="rechargeForm">
+  <h2>📱 Recharge Lead</h2>
+  <input id="rname" placeholder="Name" required>
+  <input id="rphone" placeholder="Mobile" required>
+  <select id="rsim" required>
+    <option value="">Select SIM</option>
+    <option>Airtel</option>
+    <option>Jio</option>
+    <option>VI</option>
+    <option>BSNL</option>
+  </select>
+  <input id="ramount" type="number" placeholder="Recharge Amount" required>
+  <button>Submit</button>
+</form>
+
+<!-- EMERGENCY FUND -->
+<form id="fundForm">
+  <h2>🚨 Emergency Fund (Max ₹500)</h2>
+  <input id="fname" placeholder="Name" required>
+  <input id="fphone" placeholder="Mobile" required>
+  <input type="file" id="fselfie" accept="image/*" required>
+  <input placeholder="Bank Name" id="fbank" required>
+  <input placeholder="Account No" id="facc" required>
+  <input placeholder="IFSC Code" id="fifsc" required>
+  <button>Submit</button>
+</form>
+
+<!-- PUBLIC BOARD -->
+<div class="public-board">
+  <h3>🔥 Recent Activity</h3>
+  <ul id="publicList"></ul>
+</div>
+
+<!-- ADMIN LOGIN -->
+<button onclick="adminLogin()">🔐 Open Admin Panel</button>
+
+<!-- ADMIN PANEL -->
+<div class="admin" id="adminPanel">
+  <h2>📊 Admin Dashboard</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="adminTable"></tbody>
+  </table>
+</div>
+
+<a class="whatsapp" href="https://wa.me/918264426101" target="_blank">
+💬 WhatsApp
+</a>
+
+<script>
+let leads = JSON.parse(localStorage.getItem("leads")) || [];
+
+function saveLead(name, phone, type){
+  leads.push({name, phone, type, status:"Pending"});
+  localStorage.setItem("leads",JSON.stringify(leads));
+  render();
+}
+
+document.getElementById("rechargeForm").onsubmit=e=>{
+  e.preventDefault();
+  saveLead(rname.value,rphone.value,"Recharge");
+  e.target.reset();
+};
+
+document.getElementById("fundForm").onsubmit=e=>{
+  e.preventDefault();
+  saveLead(fname.value,fphone.value,"Emergency Fund");
+  e.target.reset();
+};
+
+function render(){
+  const admin=document.getElementById("adminTable");
+  const pub=document.getElementById("publicList");
+  admin.innerHTML="";
+  pub.innerHTML="";
+
+  leads.forEach((l,i)=>{
+    admin.innerHTML+=`
+      <tr>
+        <td>${l.name}</td>
+        <td>${l.phone}</td>
+        <td>${l.type}</td>
+        <td class="${l.status=="Pending"?"status-pending":"status-success"}">${l.status}</td>
+        <td>${l.status=="Pending"?`<button class="success-btn" onclick="mark(${i})">Success</button>`:"—"}</td>
+      </tr>`;
+  });
+
+  leads.slice(-6).reverse().forEach(l=>{
+    pub.innerHTML+=`
+      <li>
+        <span>${l.name.split(" ")[0]} *</span>
+        <span class="${l.status=="Pending"?"pub-pending":"pub-success"}">${l.status}</span>
+      </li>`;
+  });
+}
+
+function mark(i){
+  leads[i].status="Success";
+  localStorage.setItem("leads",JSON.stringify(leads));
+  render();
+}
+
+function adminLogin(){
+  const p=prompt("Enter Admin Password");
+  if(p==="Manoj@143"){
+    document.getElementById("adminPanel").style.display="block";
+  }else alert("Wrong Password");
+}
+
+render();
+</script>
+
+</body>
+</html>
