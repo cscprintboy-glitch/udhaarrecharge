@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ST Cottex Export Pvt Ltd</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:#fff;
+}
+
+/* HEADER */
+.header{
+    background: linear-gradient(90deg,#ff512f,#dd2476);
+    padding:20px;
+    text-align:center;
+}
+.header h1{
+    margin:0;
+    font-size:26px;
+    letter-spacing:1px;
+}
+.header p{
+    margin:5px 0 0;
+    font-size:14px;
+}
+
+/* MOVING TEXT */
+.marquee{
+    background:#000;
+    color:#00ffcc;
+    padding:10px 0;
+    font-weight:bold;
+    overflow:hidden;
+}
+.marquee span{
+    display:inline-block;
+    white-space:nowrap;
+    animation: move 15s linear infinite;
+}
+@keyframes move{
+    from{transform:translateX(100%);}
+    to{transform:translateX(-100%);}
+}
+
+/* MAIN */
+.container{
+    padding:20px;
+}
+
+/* PLANS */
+.plan{
+    background:rgba(255,255,255,0.1);
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:15px;
+    box-shadow:0 0 15px rgba(0,0,0,0.4);
+}
+.plan h2{
+    margin:0 0 10px;
+    color:#ffeb3b;
+}
+.plan p{
+    margin:5px 0;
+}
+
+/* BUTTON */
+.btn{
+    display:block;
+    text-align:center;
+    background:#25D366;
+    color:#000;
+    padding:12px;
+    margin-top:10px;
+    border-radius:8px;
+    font-weight:bold;
+    text-decoration:none;
+}
+.btn:hover{
+    background:#1ebe5d;
+}
+
+/* LIVE JOIN */
+.live-box{
+    margin-top:25px;
+    background:rgba(0,0,0,0.4);
+    padding:15px;
+    border-radius:12px;
+}
+.live-box h3{
+    margin-top:0;
+    color:#00ffcc;
+}
+.join{
+    font-size:14px;
+    margin:6px 0;
+    animation: fade 1s ease-in-out;
+}
+@keyframes fade{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+/* FOOTER */
+.footer{
+    text-align:center;
+    font-size:12px;
+    padding:15px;
+    background:#000;
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h1>ST COTTEX EXPORT PVT LTD</h1>
+    <p>Digital Money Services</p>
+</div>
+
+<!-- MOVING TEXT -->
+<div class="marquee">
+    <span>DIGITAL MONEY – ONLY ST COTTEX EXPORT PVT LTD WORKER • DIGITAL MONEY – ONLY ST COTTEX EXPORT PVT LTD WORKER</span>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+    <!-- PLANS -->
+    <div class="plan">
+        <h2>Recharge Plan ₹149</h2>
+        <p>Charge: ₹25</p>
+        <p>Validity: 1 Month</p>
+        <a class="btn" href="https://wa.me/918264426101?text=Recharge%20149%20Apply">Apply on WhatsApp</a>
+    </div>
+
+    <div class="plan">
+        <h2>Recharge Plan ₹199</h2>
+        <p>Extra Charge: ₹30</p>
+        <p>Validity: 1 Month</p>
+        <a class="btn" href="https://wa.me/918264426101?text=Recharge%20199%20Apply">Apply on WhatsApp</a>
+    </div>
+
+    <div class="plan">
+        <h2>Recharge Plan ₹349</h2>
+        <p>Extra Charge: ₹40</p>
+        <p>Validity: 1 Month</p>
+        <a class="btn" href="https://wa.me/918264426101?text=Recharge%20349%20Apply">Apply on WhatsApp</a>
+    </div>
+
+    <div class="plan">
+        <h2>Emergency Fund ₹500</h2>
+        <p>Charge: ₹150</p>
+        <p>Validity: 1 Month</p>
+        <a class="btn" href="https://wa.me/918264426101?text=Emergency%20Fund%20500%20Apply">Apply on WhatsApp</a>
+    </div>
+
+    <!-- LIVE JOIN -->
+    <div class="live-box">
+        <h3>Live Customer Joining</h3>
+        <div id="live"></div>
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    © ST COTTEX EXPORT PVT LTD <br>
+    DIGITAL MONEY – ONLY ST COTTEX EXPORT PVT LTD WORKER
+</div>
+
+<script>
+let names = ["Rahul","Amit","Suresh","Pooja","Neha","Ravi","Sunita","Ankit","Vikas","Priya"];
+let live = document.getElementById("live");
+
+setInterval(()=>{
+    let name = names[Math.floor(Math.random()*names.length)];
+    let div = document.createElement("div");
+    div.className="join";
+    div.innerHTML = "✅ "+name+" just joined successfully";
+    live.prepend(div);
+
+    if(live.children.length>6){
+        live.removeChild(live.lastChild);
+    }
+},3000);
+</script>
+
+</body>
+</html>
