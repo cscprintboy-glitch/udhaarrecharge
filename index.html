@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ST Cottex Export Pvt Ltd</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:white;
+  text-align:center;
+}
+
+header{
+  padding:20px;
+  background:linear-gradient(45deg,#ff512f,#dd2476);
+}
+
+h1{
+  margin:0;
+  font-size:24px;
+}
+
+marquee{
+  background:black;
+  color:#00ffcc;
+  padding:10px;
+  font-weight:bold;
+}
+
+.card{
+  background:rgba(255,255,255,0.1);
+  margin:15px;
+  padding:15px;
+  border-radius:15px;
+}
+
+input, select{
+  width:90%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:10px;
+  border:none;
+}
+
+button{
+  padding:12px 20px;
+  background:linear-gradient(45deg,#00c6ff,#0072ff);
+  color:white;
+  border:none;
+  border-radius:25px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+#installBtn{
+  display:none;
+  margin-top:15px;
+  background:linear-gradient(45deg,#dd2476,#ff512f);
+}
+
+footer{
+  font-size:13px;
+  opacity:0.9;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>ST Cottex Export Pvt Ltd</h1>
+<p>Iraq Machiwada, 141115<br>Ludhiana, Punjab, India</p>
+</header>
+
+<marquee>DIGITAL MONEY – ONLY ST COTTEX WORKER</marquee>
+
+<div class="card">
+<h3>Recharge / Emergency Fund Form</h3>
+
+<input type="text" placeholder="Customer Name">
+<input type="text" placeholder="Customer Mobile Number">
+<input type="email" placeholder="Customer Gmail">
+
+<select>
+<option>Select Service</option>
+<option>Recharge ₹149 → Charge ₹25 (1 Month)</option>
+<option>Recharge ₹199 → Charge ₹30</option>
+<option>Recharge ₹349 → Charge ₹40</option>
+<option>Emergency Fund ₹500 → Charge ₹150 (1 Month)</option>
+</select>
+
+<input type="text" placeholder="Bank Name">
+<input type="text" placeholder="Account Number">
+<input type="text" placeholder="IFSC Code">
+<input type="text" placeholder="Google Pay / UPI Number">
+
+<label>Customer Selfie Upload</label><br>
+<input type="file" accept="image/*">
+
+<button>Submit</button>
+</div>
+
+<div class="card">
+<h3>📲 App Install</h3>
+<p>Fast service ke liye app install kare</p>
+<button id="installBtn">Install ST Cottex App</button>
+</div>
+
+<div class="card">
+<h3>Our Services</h3>
+<p>
+Credit Cards • Personal Loans • SBM ZET Credit Card<br>
+Bank Accounts • Demat Accounts • Insurance
+</p>
+<a href="https://varshaprint.banksupport.in" target="_blank" style="color:#00ffcc;">
+👉 Visit Website
+</a>
+</div>
+
+<footer>
+<p>WhatsApp Support: 8264426101</p>
+<p>© ST Cottex Export Pvt Ltd</p>
+</footer>
+
+<script>
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (e)=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display="inline-block";
+});
+
+installBtn.addEventListener("click",()=>{
+  deferredPrompt.prompt();
+});
+</script>
+
+</body>
+</html>
