@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ST COTTEX EXPORT PVT LTD</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Montserrat', Arial, sans-serif;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:#fff;
+}
+
+/* ===== NEON HEADER ===== */
+.neon-header{
+  text-align:center;
+  padding:30px 15px;
+}
+
+@keyframes neonPulse {
+  0%,100%{
+    text-shadow:0 0 5px #00fff0,0 0 15px #00fff0,0 0 30px #00c6ff;
+  }
+  50%{
+    text-shadow:0 0 2px #00fff0,0 0 8px #00c6ff,0 0 15px #00c6ff;
+  }
+}
+
+.neon-header h1{
+  margin:0;
+  font-size:28px;
+  font-weight:800;
+  text-transform:uppercase;
+  animation:neonPulse 2.5s infinite;
+}
+
+.neon-header p{
+  margin-top:8px;
+  font-size:15px;
+  background:linear-gradient(90deg,#ff00ff,#00fff0,#ff9900);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-weight:600;
+  animation:glowMove 4s linear infinite;
+}
+
+/* ===== LIVE USERS ===== */
+.live-users{
+  text-align:center;
+  font-size:14px;
+  color:#00ffae;
+  margin-top:12px;
+  animation:fadeUp 1s ease;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ===== FORM CARD ===== */
+.form-card{
+  max-width:380px;
+  margin:20px auto;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(14px);
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.25);
+  box-shadow:0 8px 30px rgba(0,0,0,0.4);
+  padding:22px;
+}
+
+.form-card h2{
+  text-align:center;
+  margin-bottom:15px;
+  font-size:18px;
+}
+
+input,select,button{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border:none;
+  border-radius:8px;
+  font-size:14px;
+}
+
+input,select{
+  background:rgba(255,255,255,0.85);
+}
+
+button{
+  background:linear-gradient(90deg,#00c6ff,#0072ff);
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* ===== FOOTER AD ===== */
+.footer-ad{
+  margin:25px 10px;
+  padding:15px;
+  border-radius:14px;
+  background:rgba(0,0,0,0.35);
+  text-align:center;
+  font-size:13px;
+}
+
+.footer-ad a{
+  color:#00fff0;
+  text-decoration:none;
+  font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<!-- NEON HEADER -->
+<div class="neon-header">
+  <h1>ST COTTEX EXPORT PVT LTD</h1>
+  <p>Iraq Machiwada, Ludhiana, Punjab – 141115</p>
+</div>
+
+<!-- CUSTOMER LEAD FORM -->
+<div class="form-card">
+  <h2>CUSTOMER LEAD FORM</h2>
+
+  <input type="text" placeholder="CUSTOMER NAME" id="c_name" required>
+  <input type="tel" placeholder="MOBILE NUMBER" id="c_mobile" required>
+
+  <!-- SIM NAME -->
+  <select id="c_sim" required>
+    <option value="">SELECT SIM NAME</option>
+    <option>AIRTEL</option>
+    <option>JIO</option>
+    <option>VI</option>
+    <option>BSNL</option>
+  </select>
+
+  <!-- SELFIE UPLOAD -->
+  <input type="file" accept="image/*" id="c_selfie" required>
+
+  <!-- RECHARGE AMOUNT -->
+  <select id="c_amount" onchange="calcCharge()">
+    <option value="">SELECT RECHARGE AMOUNT</option>
+    <option value="149">₹149</option>
+    <option value="199">₹199</option>
+    <option value="249">₹249</option>
+    <option value="349">₹349</option>
+  </select>
+  <input type="text" id="c_charge" placeholder="SERVICE CHARGE" readonly>
+
+  <!-- EMERGENCY FUND -->
+  <input type="number" id="e_amount" placeholder="EMERGENCY FUND (MAX ₹500)" oninput="calcEmergency()">
+  <input type="text" id="e_total" placeholder="TOTAL PAY (₹)" readonly>
+
+  <button onclick="submitLead()">SUBMIT LEAD</button>
+
+  <div class="live-users" id="liveUsers"></div>
+</div>
+
+<!-- FOOTER AD -->
+<div class="footer-ad">
+  <div><b>Fill Form / Check Status</b></div>
+  <a href="https://varshaprint.banksupport.in" target="_blank">
+    varshaprint.banksupport.in
+  </a>
+  <br><br>
+  CREDIT CARDS • PERSONAL LOANS • SBM ZET CREDIT CARD<br>
+  BANK ACCOUNTS • DEMAT ACCOUNTS • INSURANCE
+</div>
+
+<script>
+/* ===== LIVE JOIN CUSTOMERS ===== */
+const names=["AMIT","RAHUL","SURESH","POOJA","NEHA","VIKAS","RAVI","ANITA"];
+let i=0;
+setInterval(()=>{
+  document.getElementById("liveUsers").innerHTML=
+  "✅ "+names[i%names.length]+" joined from Iraq Machiwada";
+  i++;
+},2500);
+
+/* ===== RECHARGE / EMERGENCY CALCULATION ===== */
+function calcCharge(){
+  let amt = document.getElementById("c_amount").value;
+  let charge="";
+  if(amt=="149") charge="₹25";
+  if(amt=="199") charge="₹35";
+  if(amt=="249") charge="₹45";
+  if(amt=="349") charge="₹60";
+  document.getElementById("c_charge").value = charge;
+}
+
+function calcEmergency(){
+  let amt = Number(document.getElementById("e_amount").value);
+  if(amt>500){ alert("MAXIMUM ₹500 ALLOWED"); document.getElementById("e_amount").value=""; document.getElementById("e_total").value=""; return; }
+  if(amt>0){ document.getElementById("e_total").value = "₹"+(amt+150); } 
+  else{ document.getElementById("e_total").value=""; }
+}
+
+/* ===== SUBMIT LEAD ===== */
+function submitLead(){
+  let name = document.getElementById("c_name").value;
+  let mobile = document.getElementById("c_mobile").value;
+  let sim = document.getElementById("c_sim").value;
+  let amount = document.getElementById("c_amount").value;
+  let charge = document.getElementById("c_charge").value;
+  let emergency = document.getElementById("e_amount").value;
+  let totalPay = document.getElementById("e_total").value;
+
+  if(!name || !mobile || !sim){ alert("ALL DETAILS REQUIRED"); return; }
+
+  // WHATSAPP MESSAGE
+  let msg = `NEW CUSTOMER LEAD\nNAME: ${name}\nMOBILE: ${mobile}\nSIM: ${sim}\nRECHARGE: ${amount}\nCHARGE: ${charge}\nEMERGENCY: ${emergency}\nTOTAL PAY: ${totalPay}`;
+  window.open("https://wa.me/918264426101?text="+encodeURIComponent(msg),"__blank");
+
+  alert("LEAD SUBMITTED SUCCESSFULLY ✅");
+}
+</script>
+
+</body>
+</html>
